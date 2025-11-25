@@ -1,7 +1,6 @@
 version: '3.8'
 
 services:
-  # Prometheus
   prometheus:
     image: prom/prometheus:v2.37.9
     container_name: prometheus
@@ -20,9 +19,8 @@ services:
     networks:
       - monitoring
 
-  # Grafana
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:9.5.15
     container_name: grafana
     restart: unless-stopped
     ports:
@@ -30,7 +28,6 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin123
-      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-piechart-panel
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning:ro
@@ -39,7 +36,6 @@ services:
     networks:
       - monitoring
 
-  # Node Exporter
   node-exporter:
     image: prom/node-exporter:v1.7.0
     container_name: node-exporter
