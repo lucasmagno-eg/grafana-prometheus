@@ -12,10 +12,10 @@ services:
       - '--storage.tsdb.path=/prometheus'
       - '--storage.tsdb.retention.time=200h'
       - '--web.enable-lifecycle'
-      - '--web.listen-address=:9090'
+      - '--web.listen-address=0.0.0.0:9090'
     volumes:
       - prometheus_data:/prometheus
-      - prometheus_config:/etc/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro  # ← ARQUIVO LOCAL DO GITHUB
     networks:
       - monitoring
 
@@ -47,13 +47,13 @@ services:
       - '--path.procfs=/host/proc'
       - '--path.rootfs=/rootfs'
       - '--path.sysfs=/host/sys'
+      - '--web.listen-address=0.0.0.0:9100'
     networks:
       - monitoring
 
 volumes:
   grafana_monitoring_data:
   prometheus_data:
-  prometheus_config:
 
 networks:
   monitoring:
