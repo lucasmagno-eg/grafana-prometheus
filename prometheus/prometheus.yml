@@ -18,7 +18,7 @@ scrape_configs:
   # Monitora seu servidor remoto Windows
   - job_name: 'servidor-windows-196'
     static_configs:
-      - targets: ['10.1.1.196:9090']
+      - targets: ['10.1.1.196:9182']
     labels:
       group: 'windows-servers'
       instance: 'servidor-windows-196'
