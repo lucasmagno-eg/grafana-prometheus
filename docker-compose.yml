@@ -15,25 +15,21 @@ services:
       - '--web.listen-address=0.0.0.0:9090'
     volumes:
       - prometheus_data:/prometheus
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_config:/etc/prometheus
     networks:
       - monitoring
 
-  # Grafana para Monitoring - NOVO NOME E PORTA DIFERENTE
   grafana-monitoring:
     image: grafana/grafana:9.5.15
     container_name: grafana-monitoring
     restart: unless-stopped
     ports:
-      - "13000:3000"   # Porta diferente do Grafana do K6
+      - "13000:3000"
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin123
     volumes:
       - grafana_monitoring_data:/var/lib/grafana
-      - ./grafana/provisioning:/etc/grafana/provisioning:ro
-    depends_on:
-      - prometheus
     networks:
       - monitoring
 
@@ -56,9 +52,6 @@ services:
       - monitoring
 
 volumes:
-  grafana_monitoring_data:  # Volume separado
+  grafana_monitoring_data:
   prometheus_data:
-
-networks:
-  monitoring:
-    driver: bridge
+  prometheus_config:
