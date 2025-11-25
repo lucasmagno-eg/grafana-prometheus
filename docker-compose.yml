@@ -5,34 +5,40 @@ services:
     image: prom/prometheus:v2.37.9
     container_name: prometheus-monitoring
     restart: unless-stopped
-    network_mode: host  # ← REDE DO HOST
+    ports:
+      - "19090:9090"
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
       - '--storage.tsdb.retention.time=200h'
       - '--web.enable-lifecycle'
-      - '--web.listen-address=:19090'  # ← PORTA DIRETA 19090
+      - '--web.listen-address=:9090'
     volumes:
       - prometheus_data:/prometheus
       - prometheus_config:/etc/prometheus
+    networks:
+      - monitoring
 
   grafana-monitoring:
     image: grafana/grafana:9.5.15
     container_name: grafana-monitoring
     restart: unless-stopped
-    network_mode: host  # ← REDE DO HOST
+    ports:
+      - "13000:3000"
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin123
-      - GF_SERVER_HTTP_PORT=13000  # ← FORÇA PORTA 13000
     volumes:
       - grafana_monitoring_data:/var/lib/grafana
+    networks:
+      - monitoring
 
   node-exporter:
     image: prom/node-exporter:v1.7.0
     container_name: node-exporter-monitoring
     restart: unless-stopped
-    network_mode: host  # ← REDE DO HOST
+    ports:
+      - "19100:9100"
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -41,9 +47,14 @@ services:
       - '--path.procfs=/host/proc'
       - '--path.rootfs=/rootfs'
       - '--path.sysfs=/host/sys'
-      - '--web.listen-address=:19100'  # ← PORTA DIRETA 19100
+    networks:
+      - monitoring
 
 volumes:
   grafana_monitoring_data:
   prometheus_data:
   prometheus_config:
+
+networks:
+  monitoring:
+    driver: bridge
