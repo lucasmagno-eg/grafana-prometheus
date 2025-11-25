@@ -15,9 +15,6 @@ services:
       - '--web.listen-address=0.0.0.0:9090'
     volumes:
       - prometheus_data:/prometheus
-    configs:
-      - source: prometheus_config
-        target: /etc/prometheus/prometheus.yml
     networks:
       - monitoring
 
@@ -60,7 +57,3 @@ volumes:
 networks:
   monitoring:
     driver: bridge
-
-configs:
-  prometheus_config:
-    file: ./prometheus.yml
