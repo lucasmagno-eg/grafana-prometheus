@@ -6,17 +6,19 @@ services:
     container_name: prometheus-monitoring
     restart: unless-stopped
     ports:
-      - "19090:9090"
+      - "19090:9090"  # ← MANTENHA assim (externa:interna)
     command:
-      - '--web.enable-lifecycle'
+      - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
       - '--storage.tsdb.retention.time=200h'
-      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.enable-lifecycle'
+      - '--web.listen-address=:9090'  # ← FORÇA escutar na 9090
     volumes:
       - prometheus_data:/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
     networks:
       - monitoring
-
+      
   grafana-monitoring:
     image: grafana/grafana:9.5.15
     container_name: grafana-monitoring
