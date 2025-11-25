@@ -3,7 +3,7 @@ version: '3.8'
 services:
   prometheus:
     image: prom/prometheus:v2.37.9
-    container_name: prometheus
+    container_name: prometheus-monitoring
     restart: unless-stopped
     ports:
       - "19090:9090"
@@ -19,17 +19,18 @@ services:
     networks:
       - monitoring
 
-  grafana:
+  # Grafana para Monitoring - NOVO NOME E PORTA DIFERENTE
+  grafana-monitoring:
     image: grafana/grafana:9.5.15
-    container_name: grafana
+    container_name: grafana-monitoring
     restart: unless-stopped
     ports:
-      - "13000:3000"
+      - "13000:3000"   # Porta diferente do Grafana do K6
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin123
     volumes:
-      - grafana_data:/var/lib/grafana
+      - grafana_monitoring_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning:ro
     depends_on:
       - prometheus
@@ -38,7 +39,7 @@ services:
 
   node-exporter:
     image: prom/node-exporter:v1.7.0
-    container_name: node-exporter
+    container_name: node-exporter-monitoring
     restart: unless-stopped
     ports:
       - "19100:9100"
@@ -55,7 +56,7 @@ services:
       - monitoring
 
 volumes:
-  grafana_data:
+  grafana_monitoring_data:  # Volume separado
   prometheus_data:
 
 networks:
