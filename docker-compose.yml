@@ -47,7 +47,3 @@ volumes:
   grafana_monitoring_data:
   prometheus_data:
   prometheus_config:
-
-networks:
-  monitoring:
-    driver: bridge
