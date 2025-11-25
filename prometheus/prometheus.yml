@@ -3,19 +3,15 @@ global:
   evaluation_interval: 15s
 
 scrape_configs:
-  # Monitora o próprio Prometheus
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
 
-  # Monitora o Node Exporter local
   - job_name: 'node-exporter-local'
     static_configs:
       - targets: ['node-exporter-monitoring:9100']
-    labels:
-      group: 'local-servers'
 
-  # Monitora seu servidor remoto Windows
+  # SERVIDOR WINDOWS - usando Windows Exporter na porta 9182
   - job_name: 'servidor-windows-196'
     static_configs:
       - targets: ['10.1.1.196:9182']
@@ -23,7 +19,7 @@ scrape_configs:
       group: 'windows-servers'
       instance: 'servidor-windows-196'
 
-  # Monitora servidor GLPI
+  # SERVIDOR GLPI - usando Node Exporter na porta 9100
   - job_name: 'servidor-glpi'
     static_configs:
       - targets: ['172.17.17.30:9100']
