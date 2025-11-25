@@ -1,10 +1,9 @@
 version: '3.8'
 
 services:
-  # Prometheus
   prometheus:
     image: prom/prometheus:v2.37.9
-    container_name: prometheus
+    container_name: prometheus-monitoring
     restart: unless-stopped
     ports:
       - "19090:9090"
@@ -16,33 +15,26 @@ services:
       - '--web.listen-address=0.0.0.0:9090'
     volumes:
       - prometheus_data:/prometheus
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     networks:
       - monitoring
 
-  # Grafana
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
+  grafana-monitoring:
+    image: grafana/grafana:9.5.15
+    container_name: grafana-monitoring
     restart: unless-stopped
     ports:
       - "13000:3000"
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin123
-      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-piechart-panel
     volumes:
-      - grafana_data:/var/lib/grafana
-      - ./grafana/provisioning:/etc/grafana/provisioning:ro
-    depends_on:
-      - prometheus
+      - grafana_monitoring_data:/var/lib/grafana
     networks:
       - monitoring
 
-  # Node Exporter
   node-exporter:
     image: prom/node-exporter:v1.7.0
-    container_name: node-exporter
+    container_name: node-exporter-monitoring
     restart: unless-stopped
     ports:
       - "19100:9100"
@@ -59,7 +51,7 @@ services:
       - monitoring
 
 volumes:
-  grafana_data:
+  grafana_monitoring_data:
   prometheus_data:
 
 networks:
