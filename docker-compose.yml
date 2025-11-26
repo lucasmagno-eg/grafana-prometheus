@@ -14,7 +14,6 @@ services:
       - '--web.enable-lifecycle'
       - '--web.listen-address=0.0.0.0:9090'
     volumes:
-      - ./prometheus/:/etc/prometheus/
       - prometheus_data:/prometheus
     networks:
       - monitoring
