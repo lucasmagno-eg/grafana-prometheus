@@ -1,3 +1,17 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+# Carregar regras
+rule_files:
+  - "rules.yml"  # ← Adicione esta linha
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093  # Descomente quando configurar Alertmanager
+
 scrape_configs:
   - job_name: 'prometheus'
     static_configs:
@@ -5,20 +19,18 @@ scrape_configs:
 
   - job_name: 'node-exporter'
     static_configs:
-      - targets: ['node-exporter:9100']
+      - targets: ['node-exporter-monitoring:9100']
         labels:
-          instance: 'servidor-local'
-      - targets: ['host.docker.internal:9100']  # ← Alterado
-        labels:
-          instance: 'glpi-server'
+          instance: 'node-exporter-local'
 
   - job_name: 'windows-exporter'
     static_configs:
-      - targets: ['host.docker.internal:9182']  # ← Alterado
+      - targets: ['10.1.1.196:9182']
         labels:
-          instance: 'windows-server'
-          os: 'windows'
+          instance: 'windows-server-196'
 
-  - job_name: 'cadvisor'
+  - job_name: 'servidor-glpi'
     static_configs:
-      - targets: ['cadvisor:8080']
+      - targets: ['172.17.17.30:9100']
+        labels:
+          instance: 'glpi-server'
