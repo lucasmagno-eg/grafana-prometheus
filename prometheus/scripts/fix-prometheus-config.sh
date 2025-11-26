@@ -22,6 +22,12 @@ scrape_configs:
       - targets: ['10.1.1.196:9182']
         labels:
           instance: 'windows-server-196'
+          
+  - job_name: 'windows-exporter'
+    static_configs:
+      - targets: ['10.85.129.40:9182']
+        labels:
+          instance: 'rodfor-totem1'    
 
   - job_name: 'servidor-glpi'
     static_configs:

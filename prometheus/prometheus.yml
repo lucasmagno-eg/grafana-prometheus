@@ -30,6 +30,12 @@ scrape_configs:
       instance: 'windows-server-196'
       os: 'windows'
 
+  - job_name: 'windows-exporter'
+    static_configs:
+      - targets: ['10.85.129.40:9182']
+        labels:
+          instance: 'rodfor-totem1'
+
   - job_name: 'servidor-glpi'
     static_configs:
       - targets: ['172.17.17.30:9100']  # ← IP direto do GLPI Server

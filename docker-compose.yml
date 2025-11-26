@@ -49,6 +49,7 @@ services:
       - '--web.listen-address=0.0.0.0:9100'
     networks:
       - monitoring
+      
 
 volumes:
   grafana_monitoring_data:
