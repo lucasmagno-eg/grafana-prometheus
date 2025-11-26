@@ -1,0 +1,23 @@
+global:
+  smtp_smarthost: 'smtp.gmail.com:587'
+  smtp_from: 'youremail@gmail.com'
+  smtp_auth_username: 'youremail@gmail.com'
+  smtp_auth_password: 'your-app-password'
+
+route:
+  group_by: ['alertname']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+  receiver: 'email-notifications'
+
+receivers:
+  - name: 'email-notifications'
+    email_configs:
+      - to: 'youremail@gmail.com'
+        subject: '[Prometheus] Alert: {{ .GroupLabels.alertname }}'
+        body: |
+          Alert: {{ .GroupLabels.alertname }}
+          Instance: {{ .CommonLabels.instance }}
+          Summary: {{ .CommonAnnotations.summary }}
+          Description: {{ .CommonAnnotations.description }}
