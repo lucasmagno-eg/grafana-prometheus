@@ -10,7 +10,7 @@ alerting:
   alertmanagers:
     - static_configs:
         - targets:
-          # - alertmanager:9093  # Descomente quando configurar Alertmanager
+          # - alertmanager:9093  # Descomente quando configurar alertmanager
 
 scrape_configs:
   - job_name: 'prometheus'
