@@ -22,3 +22,11 @@ scrape_configs:
       - targets: ['172.17.17.30:9100']
     labels:
       instance: 'servidor-glpi'
+      
+  - job_name: 'cadvisor'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['cadvisor:80895']
+        labels:
+          job: 'docker'
+          instance: 'docker-host'
